@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f1923;
+            color: #c8d6e5;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-box {
+            background: #1a2736;
+            border: 1px solid #2c3e50;
+            border-radius: 12px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .login-box h1 {
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 0.3rem;
+            letter-spacing: 1px;
+        }
+        .login-box .subtitle {
+            font-size: 0.82rem;
+            color: #5a7a9a;
+            margin-bottom: 2rem;
+        }
+        label {
+            display: block;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #5a7a9a;
+            margin-bottom: 0.4rem;
+        }
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #0f1923;
+            border: 1px solid #2c3e50;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input[type="password"]:focus {
+            border-color: #00d9ff;
+        }
+        input[type="password"]:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .error {
+            background: rgba(231,76,60,0.15);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            font-size: 0.82rem;
+            padding: 0.6rem 0.8rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+        .locked-box {
+            background: rgba(231,76,60,0.1);
+            border: 1px solid #e74c3c;
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .locked-box .lock-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .locked-box .lock-title {
+            color: #e74c3c;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+        .locked-box .lock-msg {
+            color: #5a7a9a;
+            font-size: 0.78rem;
+            line-height: 1.5;
+        }
+        .locked-box .lock-msg strong {
+            color: #f39c12;
+        }
+        button {
+            width: 100%;
+            margin-top: 1.5rem;
+            padding: 0.75rem;
+            background: #00d9ff;
+            color: #0f1923;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover { background: #00b8d9; }
+        button:disabled {
+            background: #2c3e50;
+            color: #5a7a9a;
+            cursor: not-allowed;
+        }
+        .hint {
+            margin-top: 1.8rem;
+            font-size: 0.72rem;
+            color: #3a5068;
+            text-align: center;
+        }
+
+        /* remember-me row */
+        .remember-row {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-top: 1.4rem;
+            cursor: pointer;
+        }
+        .remember-text {
+            font-size: 0.78rem;
+            color: #5a7a9a;
+            user-select: none;
+        }
+        /* toggle switch */
+        .switch {
+            position: relative;
+            width: 38px;
+            height: 21px;
+            flex-shrink: 0;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            inset: 0;
+            background: #2c3e50;
+            border-radius: 21px;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        .slider:before {
+            content: '';
+            position: absolute;
+            height: 15px;
+            width: 15px;
+            left: 3px;
+            bottom: 3px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+        .switch input:checked + .slider {
+            background: #00d9ff;
+        }
+        .switch input:checked + .slider:before {
+            transform: translateX(17px);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h1>⌂ Portfolio Admin</h1>
+        <p class="subtitle">Private dashboard access</p>
+
+        {% if locked %}
+            <!-- LOCKED STATE -->
+            <div class="locked-box">
+                <div class="lock-icon">🔒</div>
+                <div class="lock-title">Too many failed attempts</div>
+                <div class="lock-msg">
+                    This IP is locked out.<br>
+                    Try again in <strong>{{ minutes_left }} minute{{ minutes_left|pluralize }}</strong>.
+                </div>
+            </div>
+
+            <!-- disabled form so the page looks the same but nothing works -->
+            <form method="post">
+                {% csrf_token %}
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" disabled>
+                <button type="submit" disabled>Locked</button>
+            </form>
+
+        {% else %}
+            <!-- NORMAL LOGIN STATE -->
+            <form method="post">
+                {% csrf_token %}
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" autocomplete="off" required autofocus>
+
+                {% if error %}
+                    <div class="error">{{ error }}</div>
+                {% endif %}
+
+                <label class="remember-row">
+                    <div class="switch">
+                        <input type="checkbox" name="remember" id="remember">
+                        <span class="slider"></span>
+                    </div>
+                    <span class="remember-text">Stay logged in for 30 days</span>
+                </label>
+
+                <button type="submit">Sign In</button>
+            </form>
+        {% endif %}
+
+        <p class="hint">This page is not linked anywhere on the site.</p>
+    </div>
+</body>
+</html>

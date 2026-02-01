@@ -1,0 +1,49 @@
+{% extends "portfolio/admin_base.html" %}
+
+{% block title %}Visitors{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Visitors</h1>
+        <p class="sub">Last 200 page visits logged</p>
+    </div>
+</div>
+
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>IP Address</th>
+                <th>Page</th>
+                <th>Referrer</th>
+                <th>User Agent</th>
+                <th>Contacted?</th>
+                <th>When</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for v in visitors %}
+            <tr>
+                <td style="color:#3a5068">{{ forloop.counter }}</td>
+                <td>{{ v.ip_address|default:"—" }}</td>
+                <td><span class="badge badge-cyan">{{ v.page }}</span></td>
+                <td style="color:#5a7a9a">{{ v.referrer|default:"—" }}</td>
+                <td style="color:#5a7a9a; max-width:200px;">{{ v.user_agent|default:"—" }}</td>
+                <td>
+                    {% if v.sent_contact %}
+                        <span class="badge badge-green">Yes</span>
+                    {% else %}
+                        <span class="badge badge-orange">No</span>
+                    {% endif %}
+                </td>
+                <td style="color:#5a7a9a; white-space:nowrap;">{{ v.visited_at|date:"d M Y H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" class="empty">No visitors recorded yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

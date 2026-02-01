@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System | Hisham Haris</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --deep-ocean: #0a1929;
+        --mid-ocean: #0d2847;
+        --bright-cyan: #00f5ff;
+        --electric-blue: #1e90ff;
+        --soft-white: #f0f8ff;
+    }
+
+    body {
+        font-family: 'Rajdhani', sans-serif;
+        background: var(--deep-ocean);
+        color: var(--soft-white);
+        overflow-x: hidden;
+        line-height: 1.6;
+    }
+
+    /* WAVE BACKGROUND */
+    .wave-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+    }
+
+    .wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 200%;
+        height: 100%;
+        background: linear-gradient(180deg, 
+            transparent 0%,
+            rgba(30, 144, 255, 0.05) 30%,
+            rgba(0, 245, 255, 0.1) 60%,
+            rgba(0, 245, 255, 0.15) 100%
+        );
+        animation: wave-animation 15s ease-in-out infinite;
+    }
+
+    .wave:nth-child(2) {
+        animation: wave-animation 20s ease-in-out infinite reverse;
+        opacity: 0.6;
+    }
+
+    @keyframes wave-animation {
+        0%, 100% { transform: translateX(0) translateY(0) scale(1); }
+        25% { transform: translateX(-10%) translateY(-5%) scale(1.05); }
+        50% { transform: translateX(0) translateY(-10%) scale(1.1); }
+        75% { transform: translateX(-5%) translateY(-5%) scale(1.05); }
+    }
+
+    /* NAVIGATION */
+    .nav {
+        padding: 2rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(10, 25, 41, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(0, 245, 255, 0.2);
+    }
+
+    .nav-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 2rem;
+        background: transparent;
+        border: 2px solid var(--bright-cyan);
+        color: var(--bright-cyan);
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+        background: var(--bright-cyan);
+        color: var(--deep-ocean);
+        box-shadow: 0 0 20px rgba(0, 245, 255, 0.6);
+    }
+
+    .live-demo-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 2rem;
+        background: var(--bright-cyan);
+        border: 2px solid var(--bright-cyan);
+        color: var(--deep-ocean);
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 20px rgba(0, 245, 255, 0.4);
+    }
+
+    .live-demo-button:hover {
+        background: transparent;
+        color: var(--bright-cyan);
+        box-shadow: 0 0 30px rgba(0, 245, 255, 0.6);
+    }
+
+    /* PROJECT HERO */
+    .project-hero {
+        padding: 12rem 2rem 6rem;
+        text-align: center;
+    }
+
+    .project-hero h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: clamp(2.5rem, 7vw, 5rem);
+        font-weight: 900;
+        color: var(--bright-cyan);
+        text-shadow: 0 0 40px rgba(0, 245, 255, 0.5);
+        margin-bottom: 1.5rem;
+        letter-spacing: 2px;
+    }
+
+    .project-subtitle {
+        font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+        color: rgba(240, 248, 255, 0.8);
+        max-width: 800px;
+        margin: 0 auto 3rem;
+        font-weight: 300;
+    }
+
+    .project-meta {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        flex-wrap: wrap;
+        margin-bottom: 3rem;
+    }
+
+    .meta-item {
+        text-align: center;
+    }
+
+    .meta-label {
+        font-size: 0.9rem;
+        color: rgba(240, 248, 255, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 0.5rem;
+    }
+
+    .meta-value {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--bright-cyan);
+    }
+
+    /* MAIN IMAGE */
+    .main-image-container {
+        max-width: 1200px;
+        margin: 0 auto 6rem;
+        padding: 0 2rem;
+    }
+
+    .main-image {
+        width: 100%;
+        height: 600px;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 2px solid var(--bright-cyan);
+        box-shadow: 0 30px 80px rgba(0, 245, 255, 0.3);
+        position: relative;
+    }
+
+    .main-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .main-image:hover img {
+        transform: scale(1.05);
+    }
+
+    /* CONTENT SECTIONS */
+    .content-section {
+        max-width: 1200px;
+        margin: 0 auto 6rem;
+        padding: 0 2rem;
+    }
+
+    .section-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 700;
+        color: var(--bright-cyan);
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .content-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .feature-card {
+        background: rgba(13, 40, 71, 0.4);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 245, 255, 0.2);
+        border-radius: 15px;
+        padding: 2rem;
+        transition: all 0.4s ease;
+    }
+
+    .feature-card:hover {
+        border-color: var(--bright-cyan);
+        box-shadow: 0 10px 40px rgba(0, 245, 255, 0.2);
+        transform: translateY(-5px);
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .feature-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--bright-cyan);
+        margin-bottom: 1rem;
+    }
+
+    .feature-description {
+        font-size: 1.1rem;
+        color: rgba(240, 248, 255, 0.8);
+        line-height: 1.7;
+    }
+
+    .text-content {
+        font-size: 1.2rem;
+        line-height: 1.9;
+        color: rgba(240, 248, 255, 0.9);
+        margin-bottom: 2rem;
+    }
+
+    .text-content p {
+        margin-bottom: 1.5rem;
+    }
+
+    /* TECHNOLOGY STACK */
+    .tech-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .tech-badge {
+        padding: 0.8rem 1.5rem;
+        background: rgba(0, 245, 255, 0.1);
+        border: 2px solid var(--bright-cyan);
+        border-radius: 30px;
+        font-weight: 700;
+        color: var(--bright-cyan);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+    }
+
+    .tech-badge:hover {
+        background: var(--bright-cyan);
+        color: var(--deep-ocean);
+        box-shadow: 0 5px 20px rgba(0, 245, 255, 0.4);
+        transform: translateY(-3px);
+    }
+
+    /* STATISTICS */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+
+    .stat-card {
+        text-align: center;
+        padding: 2rem;
+        background: rgba(13, 40, 71, 0.4);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 245, 255, 0.2);
+        border-radius: 15px;
+        transition: all 0.4s ease;
+    }
+
+    .stat-card:hover {
+        border-color: var(--bright-cyan);
+        box-shadow: 0 10px 30px rgba(0, 245, 255, 0.3);
+    }
+
+    .stat-number {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 3rem;
+        font-weight: 900;
+        color: var(--bright-cyan);
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 1.1rem;
+        color: rgba(240, 248, 255, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* CODE SNIPPET */
+    .code-section {
+        background: rgba(13, 40, 71, 0.6);
+        border: 1px solid rgba(0, 245, 255, 0.3);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-top: 2rem;
+        overflow-x: auto;
+    }
+
+    .code-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        color: var(--bright-cyan);
+        margin-bottom: 1rem;
+    }
+
+    pre {
+        background: rgba(0, 0, 0, 0.4);
+        padding: 1.5rem;
+        border-radius: 10px;
+        overflow-x: auto;
+        border-left: 3px solid var(--bright-cyan);
+    }
+
+    code {
+        font-family: 'Courier New', monospace;
+        font-size: 0.95rem;
+        color: #a8dadc;
+        line-height: 1.6;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        .project-meta {
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .main-image {
+            height: 400px;
+        }
+
+        .content-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .nav-content {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <!-- WAVE BACKGROUND -->
+    <div class="wave-container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="portfolio.html" class="back-button">
+                ← Back to Portfolio
+            </a>
+            <a href="https://hishamharis2255.pythonanywhere.com" target="_blank" class="live-demo-button">
+                🚀 View Live Demo
+            </a>
+        </div>
+    </nav>
+
+    <!-- PROJECT HERO -->
+    <section class="project-hero">
+        <h1>Inventory Management System</h1>
+        <p class="project-subtitle">
+            A powerful Django-based inventory tracking solution with QR code generation, 
+            automated PDF reporting, and comprehensive stock management capabilities.
+        </p>
+        
+        <div class="project-meta">
+            <div class="meta-item">
+                <div class="meta-label">Year</div>
+                <div class="meta-value">2025</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Framework</div>
+                <div class="meta-value">Django 6.0</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Role</div>
+                <div class="meta-value">Full-Stack Developer</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Platform</div>
+                <div class="meta-value">Web Application</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN IMAGE -->
+    <div class="main-image-container">
+        <div class="main-image">
+            <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&q=80" alt="Inventory Management Dashboard">
+        </div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <section class="content-section">
+        <h2 class="section-title">Project Overview</h2>
+        <div class="text-content">
+            <p>
+                The Inventory Management System represents a comprehensive solution for businesses 
+                seeking to streamline their stock tracking and reporting processes. Built on Django's 
+                robust framework, this application combines powerful backend capabilities with an 
+                intuitive user interface to deliver enterprise-grade inventory management.
+            </p>
+            <p>
+                What makes this system stand out is its integration of modern technologies—from QR 
+                code generation for instant product identification to automated PDF report generation 
+                for seamless documentation. The application leverages Django REST Framework to provide 
+                a scalable API architecture, enabling future mobile app integration and third-party 
+                system connectivity.
+            </p>
+            <p>
+                The platform was designed with real-world business needs in mind, featuring multi-user 
+                support, role-based access control, and real-time stock level monitoring. Whether 
+                managing a small warehouse or coordinating inventory across multiple locations, this 
+                system provides the tools necessary for efficient operations.
+            </p>
+        </div>
+    </section>
+
+    <!-- KEY FEATURES -->
+    <section class="content-section">
+        <h2 class="section-title">Core Features</h2>
+        <div class="content-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3 class="feature-title">Product Management</h3>
+                <p class="feature-description">
+                    Complete CRUD operations for inventory items with detailed product information, 
+                    categorization, pricing, and stock level tracking with low-stock alerts.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3 class="feature-title">QR Code Generation</h3>
+                <p class="feature-description">
+                    Automatic QR code creation for every product, enabling quick scanning and retrieval 
+                    of product information through mobile devices or barcode scanners.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📄</div>
+                <h3 class="feature-title">PDF Reporting</h3>
+                <p class="feature-description">
+                    Professional PDF report generation using ReportLab, creating detailed inventory 
+                    reports, stock summaries, and transaction histories for business documentation.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔌</div>
+                <h3 class="feature-title">REST API</h3>
+                <p class="feature-description">
+                    Comprehensive RESTful API built with Django REST Framework, providing programmatic 
+                    access to all inventory data for integration with external systems.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🖼️</div>
+                <h3 class="feature-title">Image Management</h3>
+                <p class="feature-description">
+                    Pillow-powered image handling for product photos, supporting multiple formats, 
+                    automatic resizing, and optimization for web display.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3 class="feature-title">User Authentication</h3>
+                <p class="feature-description">
+                    Secure Django authentication system with role-based permissions, ensuring data 
+                    security and controlled access to sensitive inventory information.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TECHNICAL ARCHITECTURE -->
+    <section class="content-section">
+        <h2 class="section-title">Technical Architecture</h2>
+        <div class="text-content">
+            <p>
+                The system is built on a solid foundation of modern Python technologies. Django 6.0 
+                serves as the core framework, providing a robust ORM for database interactions, built-in 
+                admin interface for quick data management, and a secure authentication system that 
+                handles user sessions and permissions.
+            </p>
+            <p>
+                The architecture follows Django's MVT (Model-View-Template) pattern, ensuring clean 
+                separation of concerns. Models define the data structure for products, categories, 
+                transactions, and users. Views handle business logic and data processing, while 
+                templates render dynamic HTML pages with real-time inventory data.
+            </p>
+            <p>
+                For API functionality, Django REST Framework powers the backend services, providing 
+                serialization of complex data types and automatic API documentation. The QR code 
+                library generates unique identifiers for each product, while ReportLab creates 
+                publication-quality PDF documents with custom layouts and branding.
+            </p>
+        </div>
+
+        <div class="tech-stack">
+            <span class="tech-badge">Django 6.0</span>
+            <span class="tech-badge">Python 3.x</span>
+            <span class="tech-badge">Django REST Framework</span>
+            <span class="tech-badge">PostgreSQL/SQLite</span>
+            <span class="tech-badge">QRCode Library</span>
+            <span class="tech-badge">ReportLab</span>
+            <span class="tech-badge">Pillow</span>
+            <span class="tech-badge">HTML/CSS/JS</span>
+        </div>
+    </section>
+
+    <!-- DEPENDENCIES BREAKDOWN -->
+    <section class="content-section">
+        <h2 class="section-title">Technology Stack Deep Dive</h2>
+        <div class="content-grid">
+            <div class="feature-card">
+                <h3 class="feature-title">Django 6.0</h3>
+                <p class="feature-description">
+                    Latest Django version providing enhanced async support, improved ORM performance, 
+                    and modern security features for building scalable web applications.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <h3 class="feature-title">REST Framework 3.16</h3>
+                <p class="feature-description">
+                    Powers the API layer with viewsets, serializers, authentication, and permissions, 
+                    enabling seamless data exchange with external applications.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <h3 class="feature-title">QRCode 8.2</h3>
+                <p class="feature-description">
+                    Generates scannable QR codes for products, supporting various error correction 
+                    levels and customizable sizes for different use cases.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <h3 class="feature-title">ReportLab 4.4</h3>
+                <p class="feature-description">
+                    Industry-standard PDF generation library creating professional reports with 
+                    tables, charts, images, and custom styling for business documentation.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <h3 class="feature-title">Pillow 12.0</h3>
+                <p class="feature-description">
+                    Advanced image processing library handling product photos, thumbnails, format 
+                    conversions, and optimization for efficient storage and display.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <h3 class="feature-title">ASGI 3.11</h3>
+                <p class="feature-description">
+                    Asynchronous server gateway interface enabling WebSocket support and async 
+                    views for real-time inventory updates and notifications.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CODE EXAMPLE -->
+    <section class="content-section">
+        <h2 class="section-title">Implementation Highlights</h2>
+        <div class="text-content">
+            <p>
+                The system leverages Django's powerful features to create a seamless inventory 
+                management experience. Here's an example of how the product model integrates 
+                multiple functionalities:
+            </p>
+        </div>
+        
+        <div class="code-section">
+            <div class="code-title">Product Model with QR Code Integration</div>
+            <pre><code>from django.db import models
+from django.core.files import File
+import qrcode
+from io import BytesIO
+from PIL import Image
+
+class Product(models.Model):
+    name = models.CharField(max_length=200)
+    sku = models.CharField(max_length=50, unique=True)
+    description = models.TextField()
+    quantity = models.IntegerField(default=0)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='products/', null=True, blank=True)
+    qr_code = models.ImageField(upload_to='qr_codes/', blank=True)
+    
+    def save(self, *args, **kwargs):
+        # Generate QR code on product creation
+        if not self.qr_code:
+            qr = qrcode.QRCode(version=1, box_size=10, border=5)
+            qr.add_data(f'SKU:{self.sku}|NAME:{self.name}')
+            qr.make(fit=True)
+            
+            img = qr.make_image(fill_color="black", back_color="white")
+            buffer = BytesIO()
+            img.save(buffer, format='PNG')
+            
+            self.qr_code.save(f'{self.sku}_qr.png', File(buffer), save=False)
+        
+        super().save(*args, **kwargs)</code></pre>
+        </div>
+    </section>
+
+    <!-- PROJECT STATISTICS -->
+    <section class="content-section">
+        <h2 class="section-title">System Capabilities</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">∞</div>
+                <div class="stat-label">Products Supported</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Major Dependencies</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">API</div>
+                <div class="stat-label">REST Enabled</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">PDF</div>
+                <div class="stat-label">Report Generation</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- USE CASES -->
+    <section class="content-section">
+        <h2 class="section-title">Real-World Applications</h2>
+        <div class="text-content">
+            <p>
+                <strong>Retail Businesses:</strong> Track product stock levels across multiple 
+                locations, generate daily sales reports, and maintain accurate inventory counts 
+                with automated low-stock alerts.
+            </p>
+            <p>
+                <strong>Warehouse Management:</strong> Use QR codes for quick product identification, 
+                manage incoming and outgoing shipments, and create detailed inventory manifests 
+                for auditing purposes.
+            </p>
+            <p>
+                <strong>E-commerce Integration:</strong> Leverage the REST API to synchronize 
+                inventory levels with online stores, preventing overselling and maintaining accurate 
+                product availability across all sales channels.
+            </p>
+            <p>
+                <strong>Manufacturing:</strong> Monitor raw material levels, track work-in-progress 
+                inventory, and generate production reports showing material consumption and 
+                finished goods output.
+            </p>
+        </div>
+    </section>
+
+    <!-- CHALLENGES & SOLUTIONS -->
+    <section class="content-section">
+        <h2 class="section-title">Development Challenges</h2>
+        <div class="text-content">
+            <p>
+                <strong>Challenge:</strong> Ensuring QR codes remain scannable across different 
+                devices and lighting conditions while maintaining a compact file size.
+            </p>
+            <p>
+                <strong>Solution:</strong> Implemented configurable error correction levels and 
+                optimal box sizes, testing across multiple QR scanning apps to ensure universal 
+                compatibility and reliable scanning performance.
+            </p>
+            <p>
+                <strong>Challenge:</strong> Creating professional PDF reports with complex layouts, 
+                tables, and images while maintaining performance with large datasets.
+            </p>
+            <p>
+                <strong>Solution:</strong> Utilized ReportLab's advanced features for efficient 
+                rendering, implemented pagination for large reports, and added caching mechanisms 
+                to reduce regeneration time for frequently accessed reports.
+            </p>
+            <p>
+                <strong>Challenge:</strong> Designing an intuitive interface that works for both 
+                technical and non-technical users managing inventory data.
+            </p>
+            <p>
+                <strong>Solution:</strong> Created a clean, responsive UI with clear workflows, 
+                contextual help text, and visual feedback for all operations. Added bulk import/export 
+                functionality for power users while maintaining simple forms for basic operations.
+            </p>
+        </div>
+    </section>
+
+    <!-- KEY LEARNINGS -->
+    <section class="content-section">
+        <h2 class="section-title">Key Takeaways</h2>
+        <div class="text-content">
+            <p>
+                Building this inventory management system provided invaluable experience in developing 
+                production-ready Django applications. I gained deep insights into Django's ORM 
+                optimization techniques, learning to write efficient queries that minimize database 
+                hits even with complex relationships and large datasets.
+            </p>
+            <p>
+                Working with Django REST Framework taught me the importance of well-designed APIs—
+                proper serialization, versioning strategies, and authentication mechanisms that make 
+                APIs both secure and developer-friendly. The integration of third-party libraries 
+                like QRCode and ReportLab demonstrated how to leverage existing tools effectively 
+                while customizing them to meet specific project requirements.
+            </p>
+            <p>
+                Perhaps the most significant learning was understanding the full software development 
+                lifecycle—from requirements gathering and database design through deployment and 
+                maintenance. This project reinforced that great software isn't just about clean code; 
+                it's about solving real problems in ways that users find intuitive and valuable.
+            </p>
+        </div>
+    </section>
+
+    <!-- FUTURE ENHANCEMENTS -->
+    <section class="content-section">
+        <h2 class="section-title">Future Roadmap</h2>
+        <div class="text-content">
+            <p>
+                The next phase of development will focus on adding real-time inventory tracking 
+                using WebSockets for instant stock level updates across all connected clients. 
+                This will enable multiple warehouse staff to see changes immediately without page 
+                refreshes.
+            </p>
+            <p>
+                Mobile application development is planned using React Native or Flutter, leveraging 
+                the existing REST API to provide field workers with portable inventory management 
+                capabilities, including mobile QR scanning and photo capture.
+            </p>
+            <p>
+                Advanced analytics and forecasting features will be implemented using machine learning 
+                to predict stock requirements based on historical data, seasonal trends, and business 
+                patterns, helping businesses optimize their inventory levels and reduce carrying costs.
+            </p>
+        </div>
+    </section>
+
+</body>
+</html>

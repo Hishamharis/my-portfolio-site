@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Application | Hisham Haris</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --deep-ocean: #0a1929;
+        --mid-ocean: #0d2847;
+        --bright-cyan: #00f5ff;
+        --electric-blue: #1e90ff;
+        --soft-white: #f0f8ff;
+    }
+
+    body {
+        font-family: 'Rajdhani', sans-serif;
+        background: var(--deep-ocean);
+        color: var(--soft-white);
+        overflow-x: hidden;
+        line-height: 1.6;
+    }
+
+    .wave-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+    }
+
+    .wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 200%;
+        height: 100%;
+        background: linear-gradient(180deg, 
+            transparent 0%,
+            rgba(30, 144, 255, 0.05) 30%,
+            rgba(0, 245, 255, 0.1) 60%,
+            rgba(0, 245, 255, 0.15) 100%
+        );
+        animation: wave-animation 15s ease-in-out infinite;
+    }
+
+    @keyframes wave-animation {
+        0%, 100% { transform: translateX(0) translateY(0) scale(1); }
+        50% { transform: translateX(0) translateY(-10%) scale(1.1); }
+    }
+
+    .nav {
+        padding: 2rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: rgba(10, 25, 41, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(0, 245, 255, 0.2);
+    }
+
+    .nav-content {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 2rem;
+        background: transparent;
+        border: 2px solid var(--bright-cyan);
+        color: var(--bright-cyan);
+        font-weight: 700;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+        background: var(--bright-cyan);
+        color: var(--deep-ocean);
+    }
+
+    .content-wrapper {
+        padding: 12rem 2rem 6rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        color: var(--bright-cyan);
+        text-shadow: 0 0 40px rgba(0, 245, 255, 0.5);
+        margin-bottom: 2rem;
+    }
+
+    .message {
+        font-size: clamp(1.2rem, 2vw, 1.6rem);
+        color: rgba(240, 248, 255, 0.8);
+        line-height: 1.8;
+        margin-bottom: 3rem;
+    }
+
+    .cta-button {
+        display: inline-block;
+        padding: 1rem 2.5rem;
+        background: transparent;
+        border: 2px solid var(--bright-cyan);
+        color: var(--bright-cyan);
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+        background: var(--bright-cyan);
+        color: var(--deep-ocean);
+        box-shadow: 0 0 30px rgba(0, 245, 255, 0.6);
+    }
+    </style>
+</head>
+<body>
+    <div class="wave-container">
+        <div class="wave"></div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="portfolio.html" class="back-button">
+                ← Back to Portfolio
+            </a>
+        </div>
+    </nav>
+
+    <div class="content-wrapper">
+        <h1>Project Coming Soon</h1>
+        <p class="message">
+            This project page is currently under construction. Check back soon for 
+            detailed information about this web application, including features, 
+            technical implementation, and visual demonstrations.
+        </p>
+        <a href="portfolio.html" class="cta-button">Return to Portfolio</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+{% extends "portfolio/admin_base.html" %}
+
+{% block title %}Messages{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Messages</h1>
+        <p class="sub">All contact form submissions — click any row to expand</p>
+    </div>
+</div>
+
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th style="width:28px"></th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Subject</th>
+                <th>IP</th>
+                <th>When</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for msg in messages %}
+            <!-- main row -->
+            <tr class="msg-row" id="row-{{ msg.pk }}" onclick="toggleMsg({{ msg.pk }})">
+                <td class="toggle">▸</td>
+                <td><strong style="color:#fff">{{ msg.name }}</strong></td>
+                <td style="color:#5a7a9a">{{ msg.email }}</td>
+                <td>{{ msg.subject }}</td>
+                <td style="color:#3a5068">{{ msg.ip_address|default:"—" }}</td>
+                <td style="color:#5a7a9a; white-space:nowrap;">{{ msg.created_at|date:"d M Y H:i" }}</td>
+            </tr>
+            <!-- expandable message body -->
+            <tr class="msg-expand" id="expand-{{ msg.pk }}" style="display:none;">
+                <td colspan="6" style="padding:0;">
+                    <div class="msg-body">{{ msg.message }}</div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="empty">No messages yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+function toggleMsg(id) {
+    var row    = document.getElementById('row-' + id);
+    var expand = document.getElementById('expand-' + id);
+    var arrow  = row.querySelector('.toggle');
+    var open   = expand.style.display === 'block';
+
+    expand.style.display = open ? 'none' : 'block';
+    arrow.textContent    = open ? '▸' : '▾';
+    row.style.background = open ? '' : 'rgba(0,217,255,0.04)';
+}
+</script>
+{% endblock %}

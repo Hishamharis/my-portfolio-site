@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin{% endblock %} — Portfolio</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f1923;
+            color: #c8d6e5;
+            min-height: 100vh;
+            display: flex;
+            font-size: 0.9rem;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 220px;
+            min-height: 100vh;
+            background: #1a2736;
+            border-right: 1px solid #2c3e50;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+        .sidebar-brand {
+            padding: 1.5rem 1.2rem;
+            border-bottom: 1px solid #2c3e50;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+        }
+        .sidebar-brand span { color: #00d9ff; }
+        .sidebar nav { flex:1; padding: 1rem 0; }
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.65rem 1.2rem;
+            color: #5a7a9a;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+            transition: all 0.15s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar nav a:hover {
+            background: rgba(0,217,255,0.06);
+            color: #c8d6e5;
+        }
+        .sidebar nav a.active {
+            color: #00d9ff;
+            border-left-color: #00d9ff;
+            background: rgba(0,217,255,0.08);
+        }
+        .sidebar nav a .icon { font-size: 1rem; width: 18px; text-align: center; }
+        .sidebar-bottom {
+            border-top: 1px solid #2c3e50;
+            padding: 0.8rem 1.2rem;
+        }
+        .sidebar-bottom a {
+            color: #5a7a9a;
+            text-decoration: none;
+            font-size: 0.78rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.15s;
+        }
+        .sidebar-bottom a:hover { color: #e74c3c; }
+
+        /* ===== MAIN CONTENT ===== */
+        .main {
+            flex: 1;
+            padding: 2rem;
+            overflow-x: auto;
+        }
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.8rem;
+        }
+        .page-header h1 {
+            font-size: 1.3rem;
+            color: #fff;
+            font-weight: 600;
+        }
+        .page-header .sub {
+            font-size: 0.77rem;
+            color: #5a7a9a;
+            margin-top: 0.2rem;
+        }
+
+        /* ===== STAT CARDS ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: #1a2736;
+            border: 1px solid #2c3e50;
+            border-radius: 10px;
+            padding: 1.2rem 1.4rem;
+        }
+        .stat-card .label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #5a7a9a;
+            margin-bottom: 0.4rem;
+        }
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .stat-card .value.cyan  { color: #00d9ff; }
+        .stat-card .value.green { color: #2ecc71; }
+        .stat-card .value.orange{ color: #f39c12; }
+        .stat-card .value.red   { color: #e74c3c; }
+
+        /* ===== TABLES ===== */
+        .table-wrap {
+            background: #1a2736;
+            border: 1px solid #2c3e50;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead th {
+            text-align: left;
+            padding: 0.8rem 1rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #5a7a9a;
+            border-bottom: 1px solid #2c3e50;
+            font-weight: 600;
+            background: #1e2d3d;
+        }
+        tbody tr {
+            border-bottom: 1px solid #243440;
+            transition: background 0.15s;
+        }
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: rgba(0,217,255,0.04); }
+        tbody td {
+            padding: 0.7rem 1rem;
+            color: #c8d6e5;
+            font-size: 0.83rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 260px;
+        }
+        .badge {
+            display: inline-block;
+            font-size: 0.68rem;
+            padding: 0.2rem 0.55rem;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .badge-cyan   { background: rgba(0,217,255,0.15); color: #00d9ff; }
+        .badge-green  { background: rgba(46,204,113,0.15); color: #2ecc71; }
+        .badge-orange { background: rgba(243,156,18,0.15); color: #f39c12; }
+        .badge-red    { background: rgba(231,76,60,0.15); color: #e74c3c; }
+
+        /* ===== CHART AREA (simple bar chart via canvas) ===== */
+        .chart-box {
+            background: #1a2736;
+            border: 1px solid #2c3e50;
+            border-radius: 10px;
+            padding: 1.4rem;
+            margin-bottom: 2rem;
+        }
+        .chart-box h3 {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #5a7a9a;
+            margin-bottom: 1rem;
+        }
+        canvas { width:100% !important; }
+
+        /* ===== MESSAGE DETAIL EXPAND ===== */
+        .msg-body {
+            display: none;
+            padding: 0.8rem 1rem 1rem;
+            background: #162230;
+            border-top: 1px solid #2c3e50;
+            color: #8fa8c0;
+            font-size: 0.82rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .msg-row.open .msg-body { display: block; }
+        .msg-row td.toggle { cursor: pointer; color: #5a7a9a; user-select: none; }
+        .msg-row td.toggle:hover { color: #00d9ff; }
+
+        /* ===== EMPTY STATE ===== */
+        .empty {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #3a5068;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="sidebar-brand"><span>H</span> Portfolio Admin</div>
+    <nav>
+        <a href="{% url 'portfolio:admin_dashboard' %}" class="{% if request.path == '/admin-panel/' %}active{% endif %}">
+            <span class="icon">◎</span> Dashboard
+        </a>
+        <a href="{% url 'portfolio:admin_visitors' %}" class="{% if 'visitors' in request.path %}active{% endif %}">
+            <span class="icon">◉</span> Visitors
+        </a>
+        <a href="{% url 'portfolio:admin_messages' %}" class="{% if 'messages' in request.path %}active{% endif %}">
+            <span class="icon">✉</span> Messages
+            {% if unread_count %}<span class="badge badge-red" style="margin-left:auto;">{{ unread_count }}</span>{% endif %}
+        </a>
+    </nav>
+    <div class="sidebar-bottom">
+        <a href="{% url 'portfolio:admin_logout' %}">⇥ Logout</a>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+    {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>
