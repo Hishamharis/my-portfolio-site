@@ -7,6 +7,7 @@ urlpatterns = [
     # public
     path('', views.portfolio_index, name='home'),
     path('project/<slug:slug>/', views.project_detail, name='project_detail'),
+    path('project-example/', views.project_detail, {'slug': 'example'}, name='project_example'),
     path('api/contact/', views.contact_api, name='contact_submit'),
 
     # custom admin panel
