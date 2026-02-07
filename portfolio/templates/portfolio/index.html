@@ -988,7 +988,7 @@
 
                 <!-- Example Project -->
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="project-card" onclick="window.location.href='#'">
+                    <div class="project-card" onclick="window.location.href='{% url 'portfolio:project_example' %}'">
                         <div class="project-image">
                             <img src="{% static 'images/668229_add_512x512.png' %}" alt="Web Application">
                             <div class="project-overlay">
@@ -1007,8 +1007,8 @@
                                 <span class="tag">AOS</span>
                                 <span class="tag">Particles.js</span>
                             </div>
-                            <a href="#" class="project-link">
-                                Coming Soon <i class="bi bi-arrow-right"></i>
+                            <a href="{% url 'portfolio:project_example' %}" class="project-link">
+                                View Project <i class="bi bi-arrow-right"></i>
                             </a>
                         </div>
                     </div>

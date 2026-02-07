@@ -32,7 +32,7 @@ def _track_visitor(request):
         referrer=request.META.get('HTTP_REFERER', ''),
         user_agent=request.META.get('HTTP_USER_AGENT', ''),
     )
-    # cleanup old records — keeps the DB lean
+    # cleanup old records – keeps the DB lean
     cutoff = timezone.now() - timedelta(days=90)
     SiteVisitor.objects.filter(visited_at__lt=cutoff).delete()
 
@@ -135,7 +135,7 @@ def contact_api(request):
 
     # --- HONEYPOT: if this hidden field has any value, it's a bot ---
     if body.get('website', '').strip():
-        # silently pretend it worked — bots don't know they failed
+        # silently pretend it worked – bots don't know they failed
         return JsonResponse({'success': True, 'message': 'Message sent successfully!'})
 
     name    = body.get('name', '').strip()
@@ -194,7 +194,7 @@ def contact_api(request):
 
 
 # ---------------------------------------------------------------------------
-# Custom admin panel — session-based auth
+# Custom admin panel – session-based auth
 # ---------------------------------------------------------------------------
 
 ADMIN_SESSION_KEY = '_portfolio_admin_auth'
@@ -241,7 +241,7 @@ def admin_login(request):
         remember = request.POST.get('remember') == 'on'
 
         if password == settings.ADMIN_PANEL_PASSWORD:
-            # correct — log in, clear old failed attempts for this IP
+            # correct – log in, clear old failed attempts for this IP
             request.session[ADMIN_SESSION_KEY] = _make_token()
             if remember:
                 request.session.set_expiry(60 * 60 * 24 * 30)  # 30 days
@@ -250,7 +250,7 @@ def admin_login(request):
             LoginAttempt.objects.filter(ip_address=ip).delete()
             return redirect('portfolio:admin_dashboard')
         else:
-            # wrong — record it
+            # wrong – record it
             _record_failed_login(ip)
             # check if we just hit the limit
             if _is_ip_locked(ip):
