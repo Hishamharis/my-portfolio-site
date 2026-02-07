@@ -10,7 +10,7 @@
     <meta name="author" content="Hisham Haris">
     
     <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net data:; img-src 'self' https://images.unsplash.com data:; connect-src 'self'; frame-ancestors 'none';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net data:; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none';">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
     <title>Hisham Haris | Full-Stack Developer Portfolio</title>
@@ -884,7 +884,7 @@
                     <div class="profile-wrapper">
                         <div class="profile-glow"></div>
                         <div class="profile-image">
-                            <img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" alt="Hisham Haris">
+                            <img src="{% static 'images/Avatar.jpg' %}" alt="Hisham Haris">
                         </div>
                     </div>
                 </div>
@@ -934,7 +934,7 @@
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
                     <div class="project-card" onclick="window.open('https://hishamharis.pythonanywhere.com/accounts/login/?next=/', '_blank')">
                         <div class="project-image">
-                            <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80" alt="Inventory System">
+                            <img src="{% static 'images/Screenshot 2026-01-29 121519.png' %}" alt="Inventory System">
                             <div class="project-overlay">
                                 <i class="bi bi-arrow-right-circle project-icon"></i>
                             </div>
@@ -962,7 +962,7 @@
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="project-card" onclick="window.open('https://hishamharis.github.io/joint-force-command/', '_blank')">
                         <div class="project-image">
-                            <img src="https://images.unsplash.com/photo-1583339793403-3d9b001b6008?w=800&q=80" alt="Joint Force Command">
+                            <img src="{% static 'images/Screenshot 2026-01-29 121342.png' %}" alt="Joint Force Command">
                             <div class="project-overlay">
                                 <i class="bi bi-arrow-right-circle project-icon"></i>
                             </div>
@@ -988,9 +988,9 @@
 
                 <!-- Example Project -->
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="project-card" onclick="window.location.href='{% url 'portfolio:project_detail' slug='example' %}'">
+                    <div class="project-card" onclick="window.location.href='project-example.html'">
                         <div class="project-image">
-                            <img src="https://static.vecteezy.com/system/resources/thumbnails/000/363/962/small/1_-_1_-_Plus.jpg" alt="Web Application">
+                            <img src="{% static 'images/668229_add_512x512.png' %}" alt="Web Application">
                             <div class="project-overlay">
                                 <i class="bi bi-arrow-right-circle project-icon"></i>
                             </div>
@@ -1007,7 +1007,7 @@
                                 <span class="tag">AOS</span>
                                 <span class="tag">Particles.js</span>
                             </div>
-                            <a href="{% url 'portfolio:project_detail' slug='example' %}" class="project-link" onclick="event.stopPropagation()">
+                            <a href="https://hishamharis.github.io/joint-force-command" class="project-link">
                                 View Project <i class="bi bi-arrow-right"></i>
                             </a>
                         </div>
