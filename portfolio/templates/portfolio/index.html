@@ -988,7 +988,7 @@
 
                 <!-- Example Project -->
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                    <div class="project-card" onclick="window.location.href='project-example.html'">
+                    <div class="project-card" onclick="window.location.href='{% url 'portfolio:project_detail' slug='example' %}'">
                         <div class="project-image">
                             <img src="https://static.vecteezy.com/system/resources/thumbnails/000/363/962/small/1_-_1_-_Plus.jpg" alt="Web Application">
                             <div class="project-overlay">
@@ -1007,7 +1007,7 @@
                                 <span class="tag">AOS</span>
                                 <span class="tag">Particles.js</span>
                             </div>
-                            <a href="https://hishamharis.github.io/joint-force-command" class="project-link">
+                            <a href="{% url 'portfolio:project_detail' slug='example' %}" class="project-link" onclick="event.stopPropagation()">
                                 View Project <i class="bi bi-arrow-right"></i>
                             </a>
                         </div>

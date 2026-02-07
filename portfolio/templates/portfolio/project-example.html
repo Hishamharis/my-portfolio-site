@@ -147,7 +147,7 @@
 
     <nav class="nav">
         <div class="nav-content">
-            <a href="portfolio.html" class="back-button">
+            <a href="{% url 'portfolio:home' %}" class="back-button">
                 ← Back to Portfolio
             </a>
         </div>
@@ -160,7 +160,7 @@
             detailed information about this web application, including features, 
             technical implementation, and visual demonstrations.
         </p>
-        <a href="portfolio.html" class="cta-button">Return to Portfolio</a>
+        <a href="{% url 'portfolio:home' %}" class="cta-button">Return to Portfolio</a>
     </div>
 </body>
 </html>

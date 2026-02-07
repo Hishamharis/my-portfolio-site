@@ -14,11 +14,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # ============================================================
-# SECRETS — all pulled from .env, never hardcoded
+# SECRETS â€” all pulled from .env, never hardcoded
 # ============================================================
 SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-change-this')
 
-# ⚠️ IMPORTANT: Remove the hardcoded password!
+# âš ï¸ IMPORTANT: Remove the hardcoded password!
 # The password should ONLY come from .env file
 ADMIN_PANEL_PASSWORD = os.environ.get('ADMIN_PANEL_PASSWORD', 'Hisham55@')
 
@@ -131,7 +131,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # ============================================================
-# CORS — only allow your own domain to hit the API
+# CORS â€” only allow your own domain to hit the API
 # ============================================================
 # In local dev this is fine. When you deploy, add your real domain:
 #   CORS_ALLOWED_ORIGINS = ['https://yourdomain.com']
@@ -177,7 +177,7 @@ SECURE_BROWSER_XSS_FILTER = True
 # Prevent your site from being loaded inside an iframe (clickjacking)
 X_FRAME_OPTIONS = 'DENY'
 
-# Content Security Policy — tells the browser exactly what is allowed to run
+# Content Security Policy â€” tells the browser exactly what is allowed to run
 # This blocks any script/style that isn't explicitly from your approved sources
 SECURE_CONTENT_SECURITY_POLICY = (
     "default-src 'self'; "                                          # everything else: only your own domain
@@ -205,23 +205,23 @@ SECURE_CONTENT_SECURITY_POLICY = (
 # ============================================================
 
 # Force all traffic to HTTPS
-SECURE_SSL_REDIRECT = False  # → True in production
+SECURE_SSL_REDIRECT = False  # â†’ True in production
 
 # Tell browsers to only send cookies over HTTPS
-SESSION_COOKIE_SECURE = False  # → True in production
-CSRF_COOKIE_SECURE    = False  # → True in production
+SESSION_COOKIE_SECURE = False  # â†’ True in production
+CSRF_COOKIE_SECURE    = False  # â†’ True in production
 
 # HSTS: tell browsers to remember "always use HTTPS" for 1 year
-SECURE_HSTS_SECONDS = 0  # → 31536000 in production (1 year)
-SECURE_HSTS_INCLUDE_SUBDOMAINS = False  # → True in production
-SECURE_HSTS_PRELOAD = False  # → True in production
+SECURE_HSTS_SECONDS = 0  # â†’ 31536000 in production (1 year)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False  # â†’ True in production
+SECURE_HSTS_PRELOAD = False  # â†’ True in production
 
 
 # ============================================================
 # SESSION COOKIE HARDENING
 # ============================================================
 
-# Cookie name — change from default "sessionid" so scanners can't
+# Cookie name â€” change from default "sessionid" so scanners can't
 # fingerprint your stack as easily
 SESSION_COOKIE_NAME = '_ph_sess'
 
