@@ -5,6 +5,7 @@ Django settings for portfolio_site project.
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 
 # Load secrets from .env file
 load_dotenv()
@@ -233,3 +234,12 @@ SESSION_COOKIE_SAMESITE = 'Lax'
 
 # Session expires when the browser closes (unless "remember me" sets expiry)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+#DataBase
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
+        conn_max_age=600
+    )
+}
