@@ -2,7 +2,7 @@
 Django==5.0.1
 
 # Database
-psycopg2-binary==2.9.9  # PostgreSQL adapter (for production)
+psycopg[binary]==3.1.18
 dj-database-url==2.1.0
 
 # REST Framework
@@ -24,7 +24,7 @@ gunicorn==21.2.0
 whitenoise==6.6.0
 
 # Security
-django-csp==3.8  # Content Security Policy
+django-csp==3.8
 
 # Development Tools (optional)
 django-debug-toolbar==4.2.0
