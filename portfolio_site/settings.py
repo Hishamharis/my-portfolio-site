@@ -20,7 +20,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-change-this')
 
 # ⚠️ IMPORTANT: Remove the hardcoded password!
 # The password should ONLY come from .env file
-ADMIN_PANEL_PASSWORD = os.environ.get('ADMIN_PANEL_PASSWORD', 'change-this')
+ADMIN_PANEL_PASSWORD = os.environ.get('ADMIN_PANEL_PASSWORD', 'Hisham55@')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
